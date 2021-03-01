@@ -1,0 +1,19 @@
+.result
+{
+    height:500px;
+    width:1000px;
+    display:flex;
+    background-color: white;
+    flex-direction: column;
+    margin: 40px;
+}
+h3,h2
+{
+    display:flex;
+    justify-content: center;
+}
+.result-data{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

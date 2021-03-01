@@ -1,0 +1,51 @@
+#question-palette
+{
+  background-color: white;
+  height:500px;
+  width:1000px;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: center;
+  margin:40px;
+}
+.options
+{
+    width:300px;
+    height:50px;
+    border-radius: 10px;
+    margin:20px;
+    background-color: rgba(0, 0, 255, 0.61);
+    border:2px solid  rgba(0, 0, 255, 0.61);
+    color: white;
+}
+.next
+{
+    width:80px;
+    height:30px;
+    border-radius: 10px;
+    margin:10px;
+    background-color: rgba(0, 0, 255, 0.61);
+    border:2px solid  rgba(0, 0, 255, 0.61);
+    color: white;
+}
+.previous
+{
+    width:80px;
+    height:30px;
+    border-radius: 10px;
+    margin:10px;
+    background-color: rgba(0, 100, 0, 0.87);
+    border:2px solid rgba(0, 100, 0, 0.87);
+    color: white;
+}
+.quit
+{
+    width:80px;
+    height:30px;
+    border-radius: 10px;
+    margin:10px;
+    background-color: red;
+    border:2px solid red;
+    color: white;
+}
