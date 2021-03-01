@@ -6,7 +6,6 @@ class QuizComponent extends Component {
     constructor(props)
     {
         super(props);
-        console.log("In quiz component constructor");
         this.quizQuestion=[...quiz];
         this.state={
             clickedOption:"",
@@ -17,7 +16,7 @@ class QuizComponent extends Component {
     {
         let selectedElementId=event.target.id;
         let selectedAnswer=event.target.innerHTML;
-        console.log(selectedAnswer);
+        this.props.setIsCurrentQuestionTrue();
         this.setState({
             clickedOption:selectedElementId,
             selectedAnswer:selectedAnswer
@@ -29,6 +28,8 @@ class QuizComponent extends Component {
         return (
             <div id="question-palette">
                 <h1>Question</h1>
+                {this.props.isAnswerRight(this.state.selectedAnswer)}
+                
                 <React.Fragment key={currentQuestion}>
                     <p>{this.quizQuestion[currentQuestion].question}</p>
                     <div id="first-row">
@@ -42,7 +43,7 @@ class QuizComponent extends Component {
                     <div id="navigation-buttons">
                     <button className="next" onClick={this.props.onNextButtonClick.bind(this.props,this.state.selectedAnswer)}>Next</button>
                     <button className="previous" onClick={this.props.onPreviousButtonClick.bind(this)}>Previous</button>
-                    <Link to='/totalScore'><button className="quit">Quit</button></Link>
+                    <Link to='/totalScore'><button className="quit" onClick={this.props.onNextButtonClick.bind(this.props,this.state.selectedAnswer)}>Quit</button></Link>
                     </div>
                 </React.Fragment>
             </div>

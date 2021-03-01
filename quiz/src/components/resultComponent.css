@@ -17,3 +17,29 @@ h3,h2
     flex-direction: row;
     justify-content: space-around;
 }
+.navigation
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#home
+{
+    width:80px;
+    height:30px;
+    border-radius: 10px;
+    margin:10px;
+    background-color: rgba(0, 0, 255, 0.61);
+    border:2px solid  rgba(0, 0, 255, 0.61);
+    color: white;
+}
+#play-again
+{
+    width:80px;
+    height:30px;
+    border-radius: 10px;
+    margin:10px;
+    background-color: rgba(0, 100, 0, 0.87);
+    border:2px solid rgba(0, 100, 0, 0.87);
+    color: white;
+}

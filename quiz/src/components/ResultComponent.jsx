@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./resultComponent.css"
 class ResultComponent extends Component {
     constructor(props)
@@ -43,6 +44,10 @@ class ResultComponent extends Component {
                 <div className="result-data">
                     <p>Total Wrong answer</p>
                     <p>{totalWrong}</p>
+                </div>
+                <div className="navigation">
+                <Link to='/'><button id="home" onClick={()=>this.props.endQuiz()}>Home</button></Link>
+                <Link to='/quiz'><button id="play-again" onClick={()=>this.props.endQuiz()}>Play again</button></Link>
                 </div>
             </div>
         );

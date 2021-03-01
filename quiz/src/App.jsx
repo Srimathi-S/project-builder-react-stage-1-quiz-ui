@@ -12,20 +12,19 @@ class App extends Component{
   this.quizQuestion=[...quiz];
   this.state={
     pointsForSelectedAnswers:[],
-    currentQuestion:0
+    currentQuestion:0,
+    isCurrentQuestion:false
   }
   }
   onNextButtonClick=(selectedAnswer)=>{
    const modifiedPointsArray=this.state.pointsForSelectedAnswers;
-   console.log(this.quizQuestion[this.state.currentQuestion].selectedOption);
    if(selectedAnswer==this.quizQuestion[this.state.currentQuestion].answer)modifiedPointsArray.push(5);
    else modifiedPointsArray.push(0);
    this.setState((previous)=>{
-     console.log(previous.currentQuestion);
      return {pointsForSelectedAnswers:modifiedPointsArray,
-            currentQuestion:previous.currentQuestion+1};
+            currentQuestion:previous.currentQuestion+1,
+            isCurrentQuestion:false};
    });
-   console.log(this.state);
   }
   onPreviousButtonClick=()=>{
     if(this.state.currentQuestion==0)
@@ -34,24 +33,35 @@ class App extends Component{
       return;
     }
     const modifiedPointsArray=this.state.pointsForSelectedAnswers;
-    console.log(this.quizQuestion[this.state.currentQuestion].selectedOption);
     if(modifiedPointsArray!=undefined)modifiedPointsArray.pop();
     this.setState((previous)=>{
-     console.log(previous.currentQuestion);
      return {pointsForSelectedAnswers:modifiedPointsArray,
-            currentQuestion:previous.currentQuestion-1};
+            currentQuestion:previous.currentQuestion-1,
+            isCurrentQuestion:false};
    });
+  }
+  isAnswerRight=(selectedAnswer)=>{
+    if(this.state.isCurrentQuestion==false)return "";
+    if(this.quizQuestion[this.state.currentQuestion].answer===selectedAnswer)return "Right answer";
+    return "Wrong answer";
+  }
+  setIsCurrentQuestionTrue()
+  {
+    this.state.isCurrentQuestion=true;
+  }
+  endQuiz=()=>{
+    this.setState( {pointsForSelectedAnswers:[],
+      currentQuestion:0});
   }
   render()
   {
-  console.log("Calling this render on app");
   return (
     <div className="App">
       <Router>
        <Switch>
          <Route exact path="/"><HomeComponent/></Route>
-         <Route path="/quiz"><QuizComponent onNextButtonClick={(selectedAnswer)=>this.onNextButtonClick(selectedAnswer)} onPreviousButtonClick={()=>this.onPreviousButtonClick()} currentQuestion={this.state.currentQuestion}/></Route>
-         <Route path="/totalScore"><ResultComponent totalQuestion={this.quizQuestion.length} pointsForSelectedAnswers={this.state.pointsForSelectedAnswers}/></Route>
+         <Route path="/quiz"><QuizComponent onNextButtonClick={(selectedAnswer)=>this.onNextButtonClick(selectedAnswer)} onPreviousButtonClick={()=>this.onPreviousButtonClick()} currentQuestion={this.state.currentQuestion} isAnswerRight={(selectedAnswer)=>this.isAnswerRight(selectedAnswer)} setIsCurrentQuestionTrue={()=>this.setIsCurrentQuestionTrue()}/></Route>
+         <Route path="/totalScore"><ResultComponent endQuiz={()=>this.endQuiz()} totalQuestion={this.quizQuestion.length} pointsForSelectedAnswers={this.state.pointsForSelectedAnswers}/></Route>
        </Switch>
       </Router>
     </div>
