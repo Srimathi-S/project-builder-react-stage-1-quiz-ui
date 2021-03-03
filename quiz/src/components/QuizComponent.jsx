@@ -12,8 +12,7 @@ class QuizComponent extends Component {
             selectedAnswer:""
         };
     }
-    setClicked(event)
-    {
+    setClicked=(event)=>{
         let selectedElementId=event.target.id;
         let selectedAnswer=event.target.innerHTML;
         this.props.setIsCurrentQuestionTrue();
