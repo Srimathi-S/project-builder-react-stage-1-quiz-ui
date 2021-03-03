@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import quiz from "./quiz.json";
 import "./quizComponent.css";
 import {Link, Redirect} from "react-router-dom";
+import CoundownComponent from "./CountdownComponent";
 class QuizComponent extends Component {
     constructor(props)
     {
         super(props);
-        this.quizQuestion=[...quiz];
+        this.quizQuestion=this.props.quizQuestion;
         this.state={
             clickedOption:"",
             selectedAnswer:""
@@ -22,6 +22,9 @@ class QuizComponent extends Component {
             selectedAnswer:selectedAnswer
         })
     }
+    countdownEnded=()=>{
+        this.props.onNextButtonClick(this.state.selectedAnswer); 
+    }
     render() {
         let currentQuestion=this.props.currentQuestion;
         if(currentQuestion>=this.quizQuestion.length)return <Redirect to='/totalScore'/>
@@ -29,16 +32,16 @@ class QuizComponent extends Component {
             <div id="question-palette">
                 <h1>Question</h1>
                 {this.props.isAnswerRight(this.state.selectedAnswer)}
-                
+                <CoundownComponent countdownEnded={()=>this.countdownEnded()} currentQuestion={currentQuestion}></CoundownComponent>
                 <React.Fragment key={currentQuestion}>
                     <p>{this.quizQuestion[currentQuestion].question}</p>
                     <div id="first-row">
-                        <button id="optionA" className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].optionA}</button>
-                        <button id="optionB"className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].optionB}</button>
+                        <button id="optionA" className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].options[0]}</button>
+                        <button id="optionB"className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].options[1]}</button>
                     </div>
                     <div id="second-row">
-                        <button id="optionC" className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].optionC}</button>
-                        <button id="optionD" className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].optionD}</button>
+                        <button id="optionC" className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].options[2]}</button>
+                        <button id="optionD" className="options" onClick={this.setClicked.bind(this)}>{this.quizQuestion[currentQuestion].options[3]}</button>
                     </div>
                     <div id="navigation-buttons">
                     <button className="next" onClick={this.props.onNextButtonClick.bind(this.props,this.state.selectedAnswer)}>Next</button>

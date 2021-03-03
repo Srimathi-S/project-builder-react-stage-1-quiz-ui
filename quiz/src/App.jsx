@@ -4,21 +4,32 @@ import HomeComponent from "./components/HomeComponent";
 import ResultComponent from "./components/ResultComponent";
 import {BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import QuizComponent from "./components/QuizComponent";
-import quiz from "./components/quiz.json";
+import axios from 'axios';
 class App extends Component{
   constructor()
   {
   super()
-  this.quizQuestion=[...quiz];
   this.state={
     pointsForSelectedAnswers:[],
     currentQuestion:0,
-    isCurrentQuestion:false
+    isCurrentQuestion:false,
+    quizQuestion:[],
+    totalQuestion:0
   }
+  }
+  componentDidMount=()=>{
+    axios.get('https://my-json-server.typicode.com/Naveen132895/quiz-api/questions')
+    .then((response)=>{
+      this.setState({
+        quizQuestion:response.data,
+        totalQuestion:response.data.length
+      })
+    }).catch((error)=>console.log(error));
   }
   onNextButtonClick=(selectedAnswer)=>{
+    if(this.state.currentQuestion>this.state.totalQuestion)return;
    const modifiedPointsArray=this.state.pointsForSelectedAnswers;
-   if(selectedAnswer==this.quizQuestion[this.state.currentQuestion].answer)modifiedPointsArray.push(5);
+   if(selectedAnswer!='' && selectedAnswer==this.state.quizQuestion[this.state.currentQuestion].answer)modifiedPointsArray.push(5);
    else modifiedPointsArray.push(0);
    this.setState((previous)=>{
      return {pointsForSelectedAnswers:modifiedPointsArray,
@@ -42,7 +53,7 @@ class App extends Component{
   }
   isAnswerRight=(selectedAnswer)=>{
     if(this.state.isCurrentQuestion==false)return "";
-    if(this.quizQuestion[this.state.currentQuestion].answer===selectedAnswer)return "Right answer";
+    if(this.state.quizQuestion[this.state.currentQuestion].answer===selectedAnswer)return "Right answer";
     return "Wrong answer";
   }
   setIsCurrentQuestionTrue()
@@ -60,8 +71,8 @@ class App extends Component{
       <Router>
        <Switch>
          <Route exact path="/"><HomeComponent/></Route>
-         <Route path="/quiz"><QuizComponent onNextButtonClick={(selectedAnswer)=>this.onNextButtonClick(selectedAnswer)} onPreviousButtonClick={()=>this.onPreviousButtonClick()} currentQuestion={this.state.currentQuestion} isAnswerRight={(selectedAnswer)=>this.isAnswerRight(selectedAnswer)} setIsCurrentQuestionTrue={()=>this.setIsCurrentQuestionTrue()}/></Route>
-         <Route path="/totalScore"><ResultComponent endQuiz={()=>this.endQuiz()} totalQuestion={this.quizQuestion.length} pointsForSelectedAnswers={this.state.pointsForSelectedAnswers}/></Route>
+         <Route path="/quiz"><QuizComponent onNextButtonClick={(selectedAnswer)=>this.onNextButtonClick(selectedAnswer)} onPreviousButtonClick={()=>this.onPreviousButtonClick()} currentQuestion={this.state.currentQuestion} isAnswerRight={(selectedAnswer)=>this.isAnswerRight(selectedAnswer)} setIsCurrentQuestionTrue={()=>this.setIsCurrentQuestionTrue()} quizQuestion={this.state.quizQuestion}/></Route>
+         <Route path="/totalScore"><ResultComponent endQuiz={()=>this.endQuiz()} totalQuestion={this.state.totalQuestion} pointsForSelectedAnswers={this.state.pointsForSelectedAnswers}/></Route>
        </Switch>
       </Router>
     </div>
